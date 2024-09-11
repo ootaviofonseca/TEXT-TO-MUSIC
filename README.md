@@ -45,5 +45,3 @@ Este projeto utiliza o modelo Meta Audiocraft MusicGen para gerar música com ba
 - `app.py`: Arquivo principal contendo o código do aplicativo Streamlit.
 - `results_audios/`: Pasta onde os arquivos de áudio gerados são salvos.
 
-### Tela Inicial
-![Tela Inicial](image.png)
