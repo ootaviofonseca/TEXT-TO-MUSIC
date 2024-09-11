@@ -1,7 +1,0 @@
-python -m venv novo_ambiente
-novo_ambiente\Scripts\activate
-iniciar um ambiente virtual e instalar o requirements.txt
-pip install streamlit  (para executar)
-
-
-https://github.com/facebookresearch/audiocraft //aqui e a biblioteca usada
