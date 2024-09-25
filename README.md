@@ -19,7 +19,7 @@ Este projeto utiliza o modelo Meta Audiocraft MusicGen para gerar música com ba
 
 2. Instale as dependências:
     ```bash
-    pip install streamlit torch torchaudio numpy
+    pip install streamlit torch torchaudio
 
 3. Instale a biblioteca Audiocraft:
     ```bash
