@@ -108,57 +108,53 @@ def download_button(bin_file, button_label='Download'):
 def create_prompt(user_input):
      
     prompt = """
-        Build a text based on the description provided by the user, which will be used as a prompt for another artificial 
-        intelligence that will create instrumental music based on this description. All music must be based in the Buddhism musics culture.
-        select one of the following music genres based on the user description:
+        Build a text based on the text provided by the user(tranlate the text to english), 
+        which will be used as a prompt for another artificial 
+        intelligence that will create instrumental music based on this description. 
+        All music must be based in the Buddhism musics culture.
+        
+        Select one of the following music genres based on the user description:
 
-            Chanting and Mantras
-            Description: Found across all Buddhist traditions, these are sacred recitations of scriptures, prayers, or divine names. The most famous mantra is "Om Mani Padme Hum", symbolizing compassion and wisdom.
-            Common Instruments:
-            Bells: Symbolize wisdom and the clear, awakening mind.
-            Mala beads: Used to count repetitions of mantras.
-            Feelings Evoked: Peace, mindfulness, spiritual focus, and inner calm. Chanting often leads to a sense of transcendence and connection with the sacred.
+            1. Chanting and Mantras:   
+                Common Instruments:
+                    Bells: Symbolize wisdom and the clear, awakening mind.
+                Mala beads: Used to count repetitions of mantras.
+                Feelings Evoked: Peace, mindfulness, spiritual focus, and inner calm. Chanting often leads to a sense of transcendence and connection with the sacred.
             2. Ceremonial Music
-            Description: Found primarily in Tibetan and Chinese Buddhism, this music accompanies rituals, such as pujas (offerings), funerals, and celebrations.
-            Common Instruments:
-            Damaru: A small hand-held drum, symbolizing the sound of the dharma (teachings).
-            Dungchen: Long Tibetan trumpets that produce deep, resonant sounds, often used in monastery rituals.
-            Cymbals (Tingsha): Small metallic cymbals used to signify the start or end of a practice, invoking clarity and sharpness.
-            Gong: Used to mark transitions during ceremonies or meditative sessions.
-            Feelings Evoked: Reverence, solemnity, and spiritual awakening. The deep vibrations of instruments like the dungchen can bring a sense of grounding and connection to higher states of consciousness.
+                Description: Found primarily in Tibetan and Chinese Buddhism, this music accompanies rituals, such as pujas (offerings), funerals, and celebrations.
+                Common Instruments:
+                    Damaru: A small hand-held drum, symbolizing the sound of the dharma (teachings).
+                    Dungchen: Long Tibetan trumpets that produce deep, resonant sounds, often used in monastery rituals.
+                    Cymbals (Tingsha): Small metallic cymbals used to signify the start or end of a practice, invoking clarity and sharpness.
+                    Gong: Used to mark transitions during ceremonies or meditative sessions.
+                Feelings Evoked: Reverence, solemnity, and spiritual awakening. The deep vibrations of instruments like the dungchen can bring a sense of grounding and connection to higher states of consciousness.
             3. Zen Music (Shomyo)
-            Description: In Japanese Zen Buddhism, Shomyo is a form of Buddhist chant with roots in Indian Vedic traditions. It is minimalist, focusing on deep breaths and slow, deliberate sounds.
-            Common Instruments:
-            Wooden clappers (Mokugyo): Used to keep rhythm during chants.
-            Fuke shakuhachi (bamboo flute): Played by monks as a form of meditation and prayer.
-            Feelings Evoked: Simplicity, introspection, and detachment from worldly distractions. The music encourages mindfulness and the exploration of inner stillness.
+                Description: In Japanese Zen Buddhism, Shomyo is a form of Buddhist chant with roots in Indian Vedic traditions. It is minimalist, focusing on deep breaths and slow, deliberate sounds.
+                Common Instruments:
+                    Wooden clappers (Mokugyo): Used to keep rhythm during chants.
+                    Fuke shakuhachi (bamboo flute): Played by monks as a form of meditation and prayer.
+                Feelings Evoked: Simplicity, introspection, and detachment from worldly distractions. The music encourages mindfulness and the exploration of inner stillness.
             4. Meditation Music
-            Description: Instrumental music designed to aid meditation, often slow and calming, featuring sustained notes or gentle, flowing melodies.
-            Common Instruments:
-            Sitar: A long-necked Indian instrument with sympathetic strings that create a meditative, hypnotic resonance.
-            Tanpura: A drone instrument, providing a constant hum in the background, which creates a foundation for deeper concentration.
-            Flute: Typically used to add soft, airy tones that evoke tranquility.
-            Feelings Evoked: Deep relaxation, focus, and serenity. Meditation music is meant to slow the mind and create a space for contemplation, self-awareness, and inner peace.
+                Description: Instrumental music designed to aid meditation, often slow and calming, featuring sustained notes or gentle, flowing melodies.
+                Common Instruments:
+                    Sitar: A long-necked Indian instrument with sympathetic strings that create a meditative, hypnotic resonance.
+                    Tanpura: A drone instrument, providing a constant hum in the background, which creates a foundation for deeper concentration.
+                    Flute: Typically used to add soft, airy tones that evoke tranquility.
+                Feelings Evoked: Deep relaxation, focus, and serenity. Meditation music is meant to slow the mind and create a space for contemplation, self-awareness, and inner peace.
             5. Tibetan Monastery Music
-            Description: Music from Tibetan monasteries often features low, guttural throat singing and is performed during religious rituals and ceremonies.
-            Common Instruments:
-            Gyaling: A Tibetan reed instrument similar to an oboe, producing high-pitched, penetrating sounds.
-            Throat singing (Chanting): Monks use a unique vocal technique that allows them to produce multiple tones simultaneously, often combined with overtone singing.
-            Dungchen: Large Tibetan horns that produce deep, reverberating sounds.
-            Feelings Evoked: Awe, transcendence, and spiritual depth. The combination of throat singing and low-frequency instruments can create an otherworldly atmosphere, encouraging detachment from the physical world and immersion in spiritual practice.
+                Description: Music from Tibetan monasteries often features low, guttural throat singing and is performed during religious rituals and ceremonies.
+                    Common Instruments:
+                    Gyaling: A Tibetan reed instrument similar to an oboe, producing high-pitched, penetrating sounds.
+                    Throat singing (Chanting): Monks use a unique vocal technique that allows them to produce multiple tones simultaneously, often combined with overtone singing.
+                    Dungchen: Large Tibetan horns that produce deep, reverberating sounds.
+                Feelings Evoked: Awe, transcendence, and spiritual depth. The combination of throat singing and low-frequency instruments can create an otherworldly atmosphere, encouraging detachment from the physical world and immersion in spiritual practice.
 
-        Output: The text must include the following items:
+       the prompt must be in the following format  : 
             Description: (Here should be a description explaining how the music should be, feelings, 
             and similar aspects, and not the description given by the user.)
-            Key Elements:
-                Genre:
-                Tempo (BPM):
-                Instruments Used:
-                Structure:
-                Mood/Theme:
-                Context/Usage:
+            
 
-        Dont generate more things than i asked for, and dont generate less things than i asked for.
+       
 ...         
     """
     
@@ -185,6 +181,8 @@ def main():
         st.write("Esse é um projeto que gera música usando o modelo Meta Audiocraft MusicGen, "
                  "baseado em uma descrição feita pelo usuário.")
         st.markdown('</div>', unsafe_allow_html=True)
+
+    
 
     text_area = st.text_area("Digite uma descrição para a música :")
     time_slider = st.slider("Duração da música (em segundos) :", 2, 20, 5)

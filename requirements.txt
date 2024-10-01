@@ -89,6 +89,7 @@ preshed==3.0.9
 protobuf==5.28.0
 psutil==6.0.0
 pyarrow==17.0.0
+PyAudio==0.2.14
 pycparser==2.22
 pydantic==2.8.2
 pydantic_core==2.20.1
@@ -122,6 +123,7 @@ soxr==0.5.0.post1
 spacy==3.7.6
 spacy-legacy==3.0.12
 spacy-loggers==1.0.5
+SpeechRecognition==3.10.4
 srsly==2.4.8
 starlette==0.38.4
 streamlit==1.38.0
