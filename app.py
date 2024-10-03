@@ -6,7 +6,8 @@ import base64
 import time 
 from audiocraft.models.musicgen import MusicGen
 import ollama
-
+import voice as vc
+import speech_recognition as sr
 
 # Configuração da página no Streamlit, com tema personalizado
 st.set_page_config(page_title="Text-to-Music", page_icon=":headphones:")
@@ -108,53 +109,17 @@ def download_button(bin_file, button_label='Download'):
 def create_prompt(user_input):
      
     prompt = """
-        Build a text based on the text provided by the user(tranlate the text to english), 
-        which will be used as a prompt for another artificial 
-        intelligence that will create instrumental music based on this description. 
-        All music must be based in the Buddhism musics culture.
-        
-        Select one of the following music genres based on the user description:
-
-            1. Chanting and Mantras:   
-                Common Instruments:
-                    Bells: Symbolize wisdom and the clear, awakening mind.
-                Mala beads: Used to count repetitions of mantras.
-                Feelings Evoked: Peace, mindfulness, spiritual focus, and inner calm. Chanting often leads to a sense of transcendence and connection with the sacred.
-            2. Ceremonial Music
-                Description: Found primarily in Tibetan and Chinese Buddhism, this music accompanies rituals, such as pujas (offerings), funerals, and celebrations.
-                Common Instruments:
-                    Damaru: A small hand-held drum, symbolizing the sound of the dharma (teachings).
-                    Dungchen: Long Tibetan trumpets that produce deep, resonant sounds, often used in monastery rituals.
-                    Cymbals (Tingsha): Small metallic cymbals used to signify the start or end of a practice, invoking clarity and sharpness.
-                    Gong: Used to mark transitions during ceremonies or meditative sessions.
-                Feelings Evoked: Reverence, solemnity, and spiritual awakening. The deep vibrations of instruments like the dungchen can bring a sense of grounding and connection to higher states of consciousness.
-            3. Zen Music (Shomyo)
-                Description: In Japanese Zen Buddhism, Shomyo is a form of Buddhist chant with roots in Indian Vedic traditions. It is minimalist, focusing on deep breaths and slow, deliberate sounds.
-                Common Instruments:
-                    Wooden clappers (Mokugyo): Used to keep rhythm during chants.
-                    Fuke shakuhachi (bamboo flute): Played by monks as a form of meditation and prayer.
-                Feelings Evoked: Simplicity, introspection, and detachment from worldly distractions. The music encourages mindfulness and the exploration of inner stillness.
-            4. Meditation Music
-                Description: Instrumental music designed to aid meditation, often slow and calming, featuring sustained notes or gentle, flowing melodies.
-                Common Instruments:
-                    Sitar: A long-necked Indian instrument with sympathetic strings that create a meditative, hypnotic resonance.
-                    Tanpura: A drone instrument, providing a constant hum in the background, which creates a foundation for deeper concentration.
-                    Flute: Typically used to add soft, airy tones that evoke tranquility.
-                Feelings Evoked: Deep relaxation, focus, and serenity. Meditation music is meant to slow the mind and create a space for contemplation, self-awareness, and inner peace.
-            5. Tibetan Monastery Music
-                Description: Music from Tibetan monasteries often features low, guttural throat singing and is performed during religious rituals and ceremonies.
-                    Common Instruments:
-                    Gyaling: A Tibetan reed instrument similar to an oboe, producing high-pitched, penetrating sounds.
-                    Throat singing (Chanting): Monks use a unique vocal technique that allows them to produce multiple tones simultaneously, often combined with overtone singing.
-                    Dungchen: Large Tibetan horns that produce deep, reverberating sounds.
-                Feelings Evoked: Awe, transcendence, and spiritual depth. The combination of throat singing and low-frequency instruments can create an otherworldly atmosphere, encouraging detachment from the physical world and immersion in spiritual practice.
-
-       the prompt must be in the following format  : 
-            Description: (Here should be a description explaining how the music should be, feelings, 
-            and similar aspects, and not the description given by the user.)
-            
-
+        Build a description based on the text provided by the user (tranlate the text to english), 
+        which will be used as a prompt for another artificial intelligence that will create a 
+        budist instrumental music based on this description. 
        
+        
+       
+       the output must be in the following format  : 
+            Description: (Here should be a description explaining how the music should be, feelings, 
+           , some of the budists music types, and similar aspects,   not the description given by the user.)    
+            Genre: (Here should be the genre of budist music )
+                 
 ...         
     """
     
@@ -170,7 +135,6 @@ def create_prompt(user_input):
     ])
     return response['message']['content']
 
-
 # Função principal
 def main():
     st.title("Gerando Músicas!")
@@ -182,39 +146,43 @@ def main():
                  "baseado em uma descrição feita pelo usuário.")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    
 
-    text_area = st.text_area("Digite uma descrição para a música :")
+    # Seleção do microfone para captura do áudio
+    device_index = 1
+    
     time_slider = st.slider("Duração da música (em segundos) :", 2, 20, 5)
 
+    # Botão para capturar o áudio e convertê-lo em texto
+    gravar_audio = st.button("Capturar áudio")
     
 
-    # Botão para gerar a música
-    gerar_musica = st.button("Gerar Música")
+    if gravar_audio:
+        user_input = vc.speach_to_text(device_index)
+       
 
-    if gerar_musica and text_area and time_slider:
-        st.subheader("Música gerada")
+        if user_input:
+               
+            st.subheader("Música gerada")
 
-        prompt = create_prompt(text_area) # Cria o prompt para a IA com base na descrição do usuário
-        print (prompt)
+            prompt = create_prompt(user_input) # Cria o prompt para a IA com base na descrição do usuário
+            st.info("Descicao gerada:" +  prompt)
 
+            start_time = time.time()
+            with st.spinner('Gerando música...'):  # Adiciona um indicador de carregamento
+                music_tensors = generate_music_tensors(prompt, time_slider)
+            end_time = time.time()
+            totaltime = (end_time - start_time)/60
+            st.write(f"Tempo de execução: {totaltime:.2f} minutos")
+            audio_filepath = "results_audios/audio_0.wav"  # Caminho do arquivo de áudio
+            save_audio(music_tensors)  # Salva o áudio no diretório results_audios
 
-        start_time = time.time()
-        with st.spinner('Gerando música...'):  # Adiciona um indicador de carregamento
-            music_tensors = generate_music_tensors(prompt, time_slider)
-        end_time = time.time()
-        totaltime = (end_time - start_time)/60
-        st.write(f"Tempo de execução: {totaltime:.2f} minutos")
-        audio_filepath = "results_audios/audio_0.wav"  # Caminho do arquivo de áudio
-        save_audio(music_tensors)  # Salva o áudio no diretório results_audios
+            # Exibe o áudio no Streamlit
+            with open(audio_filepath, "rb") as audio_file:
+                audio_bytes = audio_file.read()
 
-        # Exibe o áudio no Streamlit
-        with open(audio_filepath, "rb") as audio_file:
-            audio_bytes = audio_file.read()
-
-        st.audio(audio_bytes)
-        
-        # Botão de download do áudio
-        download_button(audio_filepath, 'Download Audio')
+            st.audio(audio_bytes)
+            
+            # Botão de download do áudio
+            download_button(audio_filepath, 'Download Audio')
 
 if __name__ == "__main__":    main()
