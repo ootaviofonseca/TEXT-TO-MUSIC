@@ -10,12 +10,13 @@ def speach_to_text(device_index, language="pt-BR"):
     # Função para converter fala em texto usando portugues
     r = sr.Recognizer()
     with sr.Microphone(device_index=device_index) as source:
-        st.info("Fale alguma coisa!")
+        st.info("Audio sendo capturado...")
         audio = r.listen(source)
 
         try:
             text = r.recognize_google(audio, language=language)
-            st.success(f"Você disse: {text}")
+            #st.success(f"Você disse: {text}")
+            
             return text
         except:
             st.error("Não entendi o que você disse.")

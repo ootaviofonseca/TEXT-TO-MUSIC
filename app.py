@@ -111,16 +111,17 @@ def create_prompt(user_input):
     prompt = """
         Build a description based on the text provided by the user (tranlate the text to english), 
         which will be used as a prompt for another artificial intelligence that will create a 
-        budist instrumental music based on this description. 
+        budist music based on this description, only budist music, you can`t create another genres. 
        
-        
-       
-       the output must be in the following format  : 
-            Description: (Here should be a description explaining how the music should be, feelings, 
-           , some of the budists music types, and similar aspects,   not the description given by the user.)    
-            Genre: (Here should be the genre of budist music )
-                 
-...         
+        the output must be in the following format (Dont add any other information): : 
+            Description:
+            Key Elements :
+            Genre: 
+            Tempo: 
+            Instruments: 
+            Structure: 
+            Mood/Theme: 
+            Context/Usage:          
     """
     
     response = ollama.chat(model='gemma:2b', messages=[
@@ -165,7 +166,7 @@ def main():
             st.subheader("Música gerada")
 
             prompt = create_prompt(user_input) # Cria o prompt para a IA com base na descrição do usuário
-            st.info("Descicao gerada:" +  prompt)
+            st.info("Descrição gerada:" +  prompt)
 
             start_time = time.time()
             with st.spinner('Gerando música...'):  # Adiciona um indicador de carregamento
